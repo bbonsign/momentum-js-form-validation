@@ -1,0 +1,4 @@
+.input-invalid::after {
+    content: "Required\nAdd some text";
+    color: red;
+}
