@@ -3,13 +3,9 @@
 const formObject = document.querySelector("#parking-form");
 const inputFields = document.querySelectorAll("input");
 const formFields = document.querySelectorAll(".input-field");
+const totalDiv = document.querySelector("#total")
 let currentDate = new Date();
 let currentYear = currentDate.getFullYear();
-
-
-// FOR TESTING!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-// MAKE SURE TO DELETE OR COMMENT OUT!!!!!!!!!!!
-checkForm()
 
 
 // ================ Listeners =====================
@@ -17,7 +13,12 @@ formObject.addEventListener("input", checkForm);
 
 formObject.addEventListener("submit", function (event) {
     event.preventDefault();
-    checkForm();
+    if (validateForm()) {
+        displayCost(calculateCost());
+    }
+    else {
+        totalDiv.innerHTML = "";
+    }
 });
 
 
@@ -35,7 +36,7 @@ function checkForm() {
     validateDays();
     validateCard();
     validateCVV();
-    validateExpiration(); //almost
+    validateExpiration();
 }
 
 /**
@@ -62,8 +63,8 @@ function raiseAlert(inputElement, alertText, type) {
     }
     if (hasAlert == false) {
         let p = document.createElement("span");
-        p.classList.add("alert")
-        p.classList.add(alertType);
+        p.classList.add("alert", alertType);
+        // p.classList.add(alertType);
         p.setAttribute(dataAttribute, dataValue);
         p.textContent = alertText;
         if (type == "danger") {
@@ -139,6 +140,7 @@ function luhnCheck(val) {
  * Returns true if all fields are valid, false otherwise
  */
 function validateForm() {
+    checkForm();
     for (let child of formObject.children) {
         if (child.classList.contains("input-invalid")) {
             return false;
@@ -152,7 +154,13 @@ function validateForm() {
  * .map and .reduce will be very helpful in calculating the total cost.
  */
 function calculateCost() {
+    let cost = 0;
+    let startDate = new Date(getInputByID("#start-date").value)
+    // uses the current date, but with time set to midnight, to make calculatrions with
+    let now = new Date(currentDate.toDateString());
+    console.log(startDate);
 
+    return cost
 }
 
 /**
@@ -160,8 +168,9 @@ function calculateCost() {
  * The div with id "total" should be filled with text showing the cost.
  * This text should be removed if the form becomes invalid.
  */
-function displayCost() {
-
+function displayCost(cost) {
+    totalDiv.textContent = `Your total cost is $${cost}.00.`;
+    totalDiv.classList.add("alert", "alert-success")
 }
 
 
@@ -243,7 +252,7 @@ function validateCarMakeAndModel() {
     let regEx = /^[\w+\s]*$/;
     let makeInput = getInputByID("#car-make");
     let modelInput = getInputByID("#car-model");
-    let value = makeInput.value+modelInput.value;
+    let value = makeInput.value + modelInput.value;
     if (isEmpty(makeInput) || isEmpty(modelInput)) {
         removeAlert(makeInput, "Alphanumeric characters only", "warning");
         markEmpty(makeInput);
@@ -338,7 +347,7 @@ function validateExpiration() {
         removeAlert(input, "Enter valid expiration date", "warning");
         markEmpty(input);
     }
-    else if (regEx.test(value) && (0<value.slice(0,2) && value.slice(0,2)<13)) {
+    else if (regEx.test(value) && (0 < value.slice(0, 2) && value.slice(0, 2) < 13)) {
         value = value.slice(0, 3) + "01/20" + value.slice(3);
         // value = String(value);
         // console.log(typeof value, value);

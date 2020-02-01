@@ -4,6 +4,10 @@
     margin: 0;
 }
 
+.alert-success {
+    text-align: center;
+}
+
 .alert.alert-danger {
     width: max-content;
     padding: 0;
