@@ -2,7 +2,8 @@
 // Set up list of input elements for looping through
 const formObject = document.querySelector("#parking-form");
 const inputFields = document.querySelectorAll("input");
-// const formFields = document.querySelectorAll(".input-field");
+const formFields = document.querySelectorAll(".input-field");
+let currentYear = new Date().getFullYear();
 
 
 
@@ -20,8 +21,9 @@ validateForm()
  */
 function validateForm() {
     markEmptyFields();
-    // validateName();
-    // validateCar();
+    // validateTextFields();
+    validateName();
+    validateCar();
     // validateDate();
     // validateDays();
     // validateCard();
@@ -38,8 +40,9 @@ function validateForm() {
  */
 function raiseAlert(inputElement, alertText, type) {
     let parent = inputElement.closest(".input-field");
-    let alertClass = "alert-"+type;
-    let dataAttribute = alertText;
+    let alertType = "alert-" + type;
+    let dataAttribute = "data-" + type;
+    let dataValue = alertText;
 
     parent.classList.remove("input-valid");
     if (!parent.classList.contains("input-invalid")) {
@@ -48,17 +51,22 @@ function raiseAlert(inputElement, alertText, type) {
 
     let hasAlert = false;
     for (let i = 0; i < parent.children.length; i++) {
-        if (parent.children[i].dataset.alert == dataAttribute) {
+        if (parent.children[i].hasAttribute(dataAttribute)) {
             hasAlert = true;
         }
     }
     if (hasAlert == false) {
         let p = document.createElement("p");
         p.classList.add("alert")
-        p.classList.add(alertClass);
-        p.setAttribute("data-alert", dataAttribute);
+        p.classList.add(alertType);
+        p.setAttribute(dataAttribute, dataValue);
         p.textContent = alertText;
-        parent.appendChild(p);
+        if (type == "danger") {
+            parent.insertBefore(p, parent.children[1]);
+        }
+        else {
+            parent.appendChild(p);
+        }
     }
 }
 
@@ -66,35 +74,20 @@ function raiseAlert(inputElement, alertText, type) {
  * Removes any alert elements that has been added,
  * and adds "input-valid" class to partent div
  */
-function removeAlert(inputElement, dataText) {
+function removeAlertMarkValid(inputElement, alertText, type) {
     let parent = inputElement.closest(".input-field");
+    let dataAttribute = "data-" + type;
+    let dataValue = alertText;
 
     parent.classList.remove("input-invalid");
     parent.classList.add("input-valid");
 
     for (let child of parent.children) {
-        if (child.dataset.alert == dataText) {
+        if (child.hasAttribute(dataAttribute)) {
             child.remove();
         }
     }
 }
-
-
-
-
-// =========== VALIDATION FUNCTIONS ====================
-function markEmptyFields() {
-    let regEx = /^\s*$/;
-    for (let input of inputFields) {
-        if (input.value == "" || regEx.test(input.value)) {
-            raiseAlert(input, "Required Field", "danger");
-        }
-        else {
-            removeAlert(input, "Required Field");
-        }
-    }
-}
-
 
 function calculateCost() {
 
@@ -102,4 +95,76 @@ function calculateCost() {
 
 function displayCost() {
 
+}
+
+
+// =========== VALIDATION FUNCTIONS ====================
+function markEmptyFields() {
+    let regEx = /^\s*$/;
+    for (let input of inputFields) {
+        if (input.value == "" || regEx.test(input.value)) {
+            raiseAlert(input, "Required field", "danger");
+        }
+        else {
+            removeAlertMarkValid(input, "Required field", "danger");
+        }
+    }
+}
+
+function getInputByID(idSelector) {
+    return document.querySelector(idSelector);
+}
+
+function validateName() {
+    let regEx = /^[\w+\s]*$/;
+    let input = getInputByID("#name");
+    if (regEx.test(input.value)) {
+        removeAlertMarkValid(input, "Alphanumeric characters only", "warning")
+    }
+    else {
+        raiseAlert(input, "Alphanumeric characters only", "warning")
+    }
+}
+
+function validateCar() {
+    validateCarYear();
+    validateCarMake();
+    validateCarModel();
+    let carInputs = document.querySelectorAll(".input-field input");
+    for (let input of carInputs) {
+        let regEx = /^\s*$/;
+        if (input.value == "" || regEx.test(input.value)) {
+            raiseAlert(input, "Required field", "danger");
+        }
+    }
+}
+
+function validateCarYear() {
+    let input = getInputByID("#car-year");
+    let value = Number(input.value);
+    if (!(1900 < value && value < currentYear)) {
+        raiseAlert(input, "Enter a valid year", "warning");
+    }
+}
+
+function validateCarMake() {
+    let regEx = /^[\w+\s]*$/;
+    let input = getInputByID("#car-make");
+    if (regEx.test(input.value)) {
+        removeAlertMarkValid(input, "Alphanumeric characters only", "warning")
+    }
+    else {
+        raiseAlert(input, "Alphanumeric characters only", "warning")
+    }
+}
+
+function validateCarModel() {
+    let regEx = /^[\w+\s]*$/;
+    let input = getInputByID("#car-model");
+    if (regEx.test(input.value)) {
+        removeAlertMarkValid(input, "Alphanumeric characters only", "warning")
+    }
+    else {
+        raiseAlert(input, "Alphanumeric characters only", "warning")
+    }
 }

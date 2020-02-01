@@ -6,5 +6,23 @@
 
 .alert.alert-danger {
     width: max-content;
+    padding: 0;
+    margin-bottom: 0;
+}
+
+.alert.alert-warning {
+    width: max-content;
     padding: .1rem;
+}
+
+.input-group {
+    margin-bottom: .5rem;
+}
+
+#car-field [data-warning="Enter a valid year"] {
+    margin-left: 3rem;
+}
+
+#car-field [data-warning="Alphanumeric characters only"] {
+    margin-left: 20rem;
 }
