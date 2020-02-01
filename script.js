@@ -30,21 +30,23 @@ function validateForm() {
  */
 function raiseAlert(inputElement, alertText) {
     let parent = inputElement.closest(".input-field");
-    let alertClass = "alert";
+    let alertClass = "alert-danger";
     let dataAttribute = alertText;
 
+    parent.classList.remove("input-valid");
     if (!parent.classList.contains("input-invalid")) {
         parent.classList.add("input-invalid");
     }
 
     let hasAlert = false;
     for (let i = 0; i < parent.children.length; i++) {
-        if (parent.children[i].alert == dataAttribute) {
+        if (parent.children[i].dataset.alert == dataAttribute) {
             hasAlert = true;
         }
     }
     if (hasAlert == false) {
         let p = document.createElement("p");
+        p.classList.add("alert")
         p.classList.add(alertClass);
         p.setAttribute("data-alert", dataAttribute);
         p.textContent = alertText;
@@ -69,12 +71,12 @@ function removeAlert(inputElement, dataText) {
     }
 }
 
-
+validateForm()
 
 
 // =========== VALIDATION FUNCTIONS ====================
 function markEmptyFields() {
-    let regEx = /\s*/;
+    let regEx = /^\s*$/;
     for (let input of inputFields) {
         if (input.value == "" || regEx.test(input.value)) {
             raiseAlert(input, "Required Field");
