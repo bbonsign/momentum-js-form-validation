@@ -1,9 +1,15 @@
-// const formFields = document.querySelectorAll(".input-field");
-
 // ================ VARIABLES ==================
 // Set up list of input elements for looping through
 const formObject = document.querySelector("#parking-form");
 const inputFields = document.querySelectorAll("input");
+// const formFields = document.querySelectorAll(".input-field");
+
+
+
+// FOR TESTING!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+// MAKE SURE TO DELETE OR COMMENT OUT!!!!!!!!!!!
+validateForm()
+
 
 
 // ================ FUNCTIONS ===================
@@ -27,10 +33,12 @@ function validateForm() {
  * Checks if alert text has already been added to
  * a form filed.  If not, then add it with appropriate
  * text.  Also adds class input-invalid to
+ * The "type" argument should be a string, e.g. "danger" or "warning,"
+ * which is to specify Shoelace styling classes
  */
-function raiseAlert(inputElement, alertText) {
+function raiseAlert(inputElement, alertText, type) {
     let parent = inputElement.closest(".input-field");
-    let alertClass = "alert-danger";
+    let alertClass = "alert-"+type;
     let dataAttribute = alertText;
 
     parent.classList.remove("input-valid");
@@ -55,7 +63,7 @@ function raiseAlert(inputElement, alertText) {
 }
 
 /**
- * Removes any alert text that has been added,
+ * Removes any alert elements that has been added,
  * and adds "input-valid" class to partent div
  */
 function removeAlert(inputElement, dataText) {
@@ -71,7 +79,7 @@ function removeAlert(inputElement, dataText) {
     }
 }
 
-validateForm()
+
 
 
 // =========== VALIDATION FUNCTIONS ====================
@@ -79,7 +87,7 @@ function markEmptyFields() {
     let regEx = /^\s*$/;
     for (let input of inputFields) {
         if (input.value == "" || regEx.test(input.value)) {
-            raiseAlert(input, "Required Field");
+            raiseAlert(input, "Required Field", "danger");
         }
         else {
             removeAlert(input, "Required Field");
