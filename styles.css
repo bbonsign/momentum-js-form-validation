@@ -7,7 +7,9 @@
 .alert.alert-danger {
     width: max-content;
     padding: 0;
-    margin-bottom: 0;
+    /* margin-bottom: -.5rem; */
+    margin-left: 1rem;
+    display: inline;
 }
 
 .alert.alert-warning {
@@ -20,9 +22,12 @@
 }
 
 #car-field [data-warning="Enter a valid year"] {
+    display: inline-block;
     margin-left: 3rem;
 }
 
 #car-field [data-warning="Alphanumeric characters only"] {
-    margin-left: 20rem;
+    margin-left: 3rem;
+    display: inline;
+    /* margin-top: -3.4rem; */
 }
