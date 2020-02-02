@@ -2,7 +2,6 @@
 // Set up list of input elements for looping through
 const formObject = document.querySelector("#parking-form");
 const inputFields = document.querySelectorAll("input");
-const formFields = document.querySelectorAll(".input-field");
 const totalDiv = document.querySelector("#total")
 let currentDate = new Date();
 let currentYear = currentDate.getFullYear();
@@ -17,9 +16,15 @@ formObject.addEventListener("submit", function (event) {
         displayCost(calculateCost());
     }
     else {
-        totalDiv.innerHTML = "";
+        eraseCost();
     }
 });
+
+// Delete total cost display if start date or # of days is updated
+let startDateInput = getInputByID("#start-date");
+let daysInput = getInputByID("#days");
+startDateInput.addEventListener("input",eraseCost);
+daysInput.addEventListener("input",eraseCost);
 
 
 // ================ FUNCTIONS ===================
@@ -137,30 +142,19 @@ function luhnCheck(val) {
 }
 
 /**
- * Returns true if all fields are valid, false otherwise
- */
-function validateForm() {
-    checkForm();
-    for (let child of formObject.children) {
-        if (child.classList.contains("input-invalid")) {
-            return false;
-        }
-    }
-    return true;
-}
-
-/**
  * The cost is $5 per weekday, and $7 per weekend day.
  * .map and .reduce will be very helpful in calculating the total cost.
  */
 function calculateCost() {
     let cost = 0;
-    let startDate = new Date(getInputByID("#start-date").value)
-    // uses the current date, but with time set to midnight, to make calculatrions with
-    let now = new Date(currentDate.toDateString());
-    console.log(startDate);
+    let startDate = new Date(getInputByID("#start-date").value + "T12:00:00");
+    let startDay = Number(startDate.getDay()); // Date.getDay() returns 0 for Sunday up to 6 for Saturday
+    let days = Number(getInputByID("#days").value);
 
-    return cost
+    for (let c = startDay; c < (startDay + days); c++) {
+        cost += (c % 7 == 0 || c % 7 == 6 ? 5 : 7);
+    }
+    return cost;
 }
 
 /**
@@ -173,8 +167,24 @@ function displayCost(cost) {
     totalDiv.classList.add("alert", "alert-success")
 }
 
+function eraseCost() {
+    totalDiv.innerHTML = "";
+}
 
 // =========== VALIDATION FUNCTIONS ====================
+/**
+ * Returns true if all fields are valid, false otherwise
+ */
+function validateForm() {
+    checkForm();
+    for (let child of formObject.children) {
+        if (child.classList.contains("input-invalid")) {
+            return false;
+        }
+    }
+    return true;
+}
+
 function markEmptyFields() {
     for (let input of inputFields) {
         if (isEmpty(input)) {
@@ -268,7 +278,8 @@ function validateCarMakeAndModel() {
 
 function validateDate() {
     let input = getInputByID("#start-date");
-    let value = new Date(input.value);
+    let value = new Date(input.value + "T12:00:00");
+
     if (isEmpty(input)) {
         removeAlert(input, "Enter future date", "warning");
         markEmpty(input);
