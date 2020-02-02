@@ -9,9 +9,7 @@
 }
 
 .alert.alert-danger {
-    width: max-content;
     padding: 0;
-    /* margin-bottom: -.5rem; */
     margin-left: 1rem;
     display: inline;
 }
@@ -33,5 +31,4 @@
 #car-field [data-warning="Alphanumeric characters only"] {
     margin-left: 3rem;
     display: inline;
-    /* margin-top: -3.4rem; */
 }
