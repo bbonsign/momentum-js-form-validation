@@ -2,8 +2,7 @@
 // Set up list of input elements for looping through
 const formObject = document.querySelector("#parking-form");
 const inputFields = document.querySelectorAll("input");
-const totalDiv = document.querySelector("#total")
-let currentDate = new Date();
+let currentDate = getCurrentDate();
 let currentYear = currentDate.getFullYear();
 
 
@@ -141,6 +140,10 @@ function luhnCheck(val) {
     return (sum % 10) == 0;
 }
 
+function getCurrentDate() {
+    return new Date();
+}
+
 /**
  * The cost is $5 per weekday, and $7 per weekend day.
  * .map and .reduce will be very helpful in calculating the total cost.
@@ -163,11 +166,13 @@ function calculateCost() {
  * This text should be removed if the form becomes invalid.
  */
 function displayCost(cost) {
+    let totalDiv = document.querySelector("#total");
     totalDiv.textContent = `Your total cost is $${cost}.00.`;
     totalDiv.classList.add("alert", "alert-success")
 }
 
 function eraseCost() {
+    let totalDiv = document.querySelector("#total");
     totalDiv.innerHTML = "";
 }
 
