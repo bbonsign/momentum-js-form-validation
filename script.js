@@ -22,8 +22,8 @@ formObject.addEventListener("submit", function (event) {
 // Delete total cost display if start date or # of days is updated
 let startDateInput = getInputByID("#start-date");
 let daysInput = getInputByID("#days");
-startDateInput.addEventListener("input",eraseCost);
-daysInput.addEventListener("input",eraseCost);
+startDateInput.addEventListener("input", eraseCost);
+daysInput.addEventListener("input", eraseCost);
 
 
 // ================ FUNCTIONS ===================
@@ -32,7 +32,7 @@ daysInput.addEventListener("input",eraseCost);
  * For fields with invalid input, this function marks them as
  * invalid for Shoelace styling.
  */
-function checkForm() {
+function checkForm () {
     markEmptyFields();
     validateName();
     validateCar();
