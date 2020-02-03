@@ -149,7 +149,7 @@ function calculateCost () {
   const days = Number(getInputByID('#days').value)
 
   for (let c = startDay; c < (startDay + days); c++) {
-    cost += (c % 7 == 0 || c % 7 == 6 ? 5 : 7)
+    cost += (c % 7 === 0 || c % 7 === 6 ? 5 : 7)
   }
   return cost
 }
