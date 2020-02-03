@@ -239,12 +239,6 @@ function validateName() {
 function validateCar() {
     validateCarYear();
     validateCarMakeAndModel();
-
-    // let carField = document.querySelector("#car-field");
-    // for (let child of carField.children) {
-    //     if (child.ta
-    //     }
-    // }
 }
 
 function validateCarYear() {
